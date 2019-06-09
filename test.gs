@@ -1,0 +1,3 @@
+function TestPostSlackMessage(){
+  PostSlackMessage("hoge");
+}
