@@ -17,3 +17,10 @@ function diffDay(x,y){
       WEEK_MILLISECOND = 7 * DAY_MILLISECOND;
   return (y.getTime() - x.getTime()) / DAY_MILLISECOND;
 }
+
+function idCompare(a, b){
+  const regexp = /\[(\d+)-(\d+)\]/;
+  const a_id = a.match(regexp)[2];
+  const b_id = b.match(regexp)[2];
+  return a_id - b_id;
+}
