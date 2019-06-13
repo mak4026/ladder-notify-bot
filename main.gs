@@ -51,7 +51,9 @@ function PostGameSchedule() {
     "fields": attach_fields,
   }]
   Logger.log(attachment);
-  PostSlackMessage("@channel 本日のお品書き", attachment);
+  PostSlackMessage(
+    "@channel 本日のお品書きはこちら！\n" +
+    "*" + games.length + "本* の試合が予定されているぞ！", attachment);
 }
 
 function GetComingUpGames(current_time){
@@ -68,6 +70,12 @@ function GetComingUpGames(current_time){
       "game_date": row[1],
       "title": row[11]
     };
+  }).sort(function(a, b){
+    const date = a["game_date"].getTime() - b["game_date"].getTime();
+    if(date !== 0){
+      return date;
+    }
+    return idCompare(a["id"], b["id"]);
   });
   return target_games;
 }
