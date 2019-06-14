@@ -29,10 +29,11 @@ function PostSlackMessage(_text, _attachment){
 
 function PostGameSchedule() {
   const current_time = new Date();
-  Logger.log(current_time);
+  Logger.log("Start Time: %s", current_time);
   const games = GetComingUpGames(current_time);
+  Logger.log("Target Games: %s", games);
 
-  if(games.length == 0){
+  if(games.length === 0){
     Logger.log("Upcoming Game not found.");
     return null;
   }
@@ -62,7 +63,7 @@ function GetComingUpGames(current_time){
   const target_rows = flatten(challenge_sheets.map(function(sheet){
     return GetTargetRows(sheet, current_time);
   }));
-  Logger.log(target_rows);
+  Logger.log("target rows: %s", target_rows);
   
   const target_games = target_rows.map(function(row){
     return {
