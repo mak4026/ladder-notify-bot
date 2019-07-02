@@ -5,16 +5,21 @@ var post_channel = properties.getProperty("POST_CHANNEL");
 var icon_image = properties.getProperty("ICON_IMAGE");
 var sheet_id = properties.getProperty("SHEET_ID");
 
-function PostSlackMessage(_text, _attachment){
+function PostSlackMessage(_text, _attachment, _debug){
   var jsonData =
   {
-    "channel": post_channel,
     "username" : username,
     "icon_emoji": icon_image,
     "text" : _text,
     "attachments": _attachment,
     "link_names": true,
   };
+  
+  if(!_debug){
+    Logger.log("production post");
+    jsonData["channel"] = post_channel;
+  }
+  
   var payload = JSON.stringify(jsonData);
 
   var params =
@@ -27,8 +32,12 @@ function PostSlackMessage(_text, _attachment){
   UrlFetchApp.fetch(webhook_url, params);
 }
 
-function PostGameSchedule() {
+function PostGameScheduleTrigger(){
   const current_time = new Date();
+  PostGameSchedule(current_time);
+}
+
+function PostGameSchedule(current_time, _debug) {
   Logger.log("Start Time: %s", current_time);
   const games = GetComingUpGames(current_time);
   Logger.log("Target Games: %s", games);
@@ -54,7 +63,7 @@ function PostGameSchedule() {
   Logger.log(attachment);
   PostSlackMessage(
     "@channel 本日のお品書きはこちら！\n" +
-    "*" + games.length + "本* の試合が予定されているぞ！", attachment);
+    "*" + games.length + "本* の試合が予定されているぞ！", attachment, _debug);
 }
 
 function GetComingUpGames(current_time){
