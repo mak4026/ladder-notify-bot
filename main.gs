@@ -47,19 +47,7 @@ function PostGameSchedule(current_time, _debug) {
     return null;
   }
   
-  const attach_fields = games.map(function(game){
-    return {
-      "title": game.id + " " + game.game_date.toLocaleString('Asia/Tokyo'),
-      "value": game.title,
-      "short": false,
-    };
-  });
-  const attachment = [{
-    "fallback": "本日のお品書き",
-    "pretext": "",
-    "color": "good",
-    "fields": attach_fields,
-  }]
+  const attachment = createAttachments(games);
   Logger.log(attachment);
   PostSlackMessage(
     "@channel 本日のお品書きはこちら！\n" +
