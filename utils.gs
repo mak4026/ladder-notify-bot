@@ -21,10 +21,23 @@ function diffDay(x,y){
 }
 
 function idCompare(a, b){
-  const regexp = /\[(\d+)-(\d+)\]/;
-  const a_id = a.match(regexp)[2];
-  const b_id = b.match(regexp)[2];
-  return a_id - b_id;
+  const regexp = /\[(I+)-(\d+)-(\d+)\]/;
+  
+  const b_tier_id = b.match(regexp)[1].length;
+  const b_game_id = b.match(regexp)[3];
+  const a_tier_id = a.match(regexp)[1].length;
+  const a_game_id = a.match(regexp)[3];
+  
+  if(a_tier_id === b_tier_id){
+    return a_game_id - b_game_id;
+  } else {
+    return a_tier_id - b_tier_id;
+  }
+}
+
+function getTierFromGameId(id){
+  const regexp = /\[(I+)-\d+-\d+\]/;
+  return id.match(regexp)[1].length;
 }
 
 function getColor(i){

@@ -65,8 +65,9 @@ function GetComingUpGames(current_time){
   const target_games = target_rows.map(function(row){
     return {
       "id": row[0],
-      "game_date": row[1],
-      "title": row[11]
+      "tier": getTierFromGameId(row[0]),
+      "game_date": row[3],
+      "title": row[9]
     };
   }).sort(function(a, b){
     const date = a["game_date"].getTime() - b["game_date"].getTime();
@@ -80,13 +81,13 @@ function GetComingUpGames(current_time){
 
 function IsChallengeSheet(sheet){
   const sheet_name = sheet.getName();
-  const regexp = /Challenges@R\d+/;
+  const regexp = /^対戦表.*/;
   return regexp.test(sheet_name);
 }
 
 function GetTargetRows(sheet, current_time){
   const arr = sheet.getDataRange().getValues();
-  const date_idx = 1; // B列
+  const date_idx = 3; // D列
   return arr.filter(function(row){
     const row_date = row[date_idx];
     const row_time = new Date(row_date);
