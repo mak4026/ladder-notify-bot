@@ -73,3 +73,10 @@ function createAttachment(idx, date, games){
   
   return attachment;
 }
+
+function getCurrentSeasonMasterSheetId(master_sheet){
+  const currentSeason = master_sheet.getSheetByName('Current Season/Round').getRange('C2').getValue();
+  const arr = master_sheet.getSheetByName('MasterSheetID').getDataRange().getValues();
+  const target_row = arr.filter(function(row){ return row[0] === currentSeason });
+  return target_row[0][1];
+}

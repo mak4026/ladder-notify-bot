@@ -24,3 +24,9 @@ function TestCreateAttachments(){
   const attachments = createAttachments(games);
   Logger.log(attachments);
 }
+
+function TestGetCurrentSeasonMasterSheetId(){
+  const master_sheet = SpreadsheetApp.openById('1J0Grshv4pjuPFuJSS51PF2AAvc4iwws50X0HExm8mjU');
+  const res = getCurrentSeasonMasterSheetId(master_sheet);
+  Logger.log(res);
+}
