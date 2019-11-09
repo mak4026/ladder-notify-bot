@@ -13,14 +13,18 @@ function TestPostGameSchedule(){
 
 function TestSplitGamesByDate(){
   const current_time = new Date(2019, 5, 13, 15);
-  const games = GetComingUpGames(current_time);
+  const master_sheet = SpreadsheetApp.openById(master_sheet_id);
+  const sheet_id = getCurrentSeasonMasterSheetId(master_sheet);
+  const games = GetComingUpGames(current_time, sheet_id);
   const splited_games = splitGamesByDate(games);
   Logger.log(splited_games);
 }
 
 function TestCreateAttachments(){
   const current_time = new Date(2019, 5, 13, 15);
-  const games = GetComingUpGames(current_time);
+  const master_sheet = SpreadsheetApp.openById(master_sheet_id);
+  const sheet_id = getCurrentSeasonMasterSheetId(master_sheet);
+  const games = GetComingUpGames(current_time, sheet_id);
   const attachments = createAttachments(games);
   Logger.log(attachments);
 }

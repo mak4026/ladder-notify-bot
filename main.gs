@@ -3,7 +3,7 @@ var webhook_url = properties.getProperty("WEBHOOK_URL");
 var username = properties.getProperty("USERNAME");
 var post_channel = properties.getProperty("POST_CHANNEL");
 var icon_image = properties.getProperty("ICON_IMAGE");
-var sheet_id = properties.getProperty("SHEET_ID");
+var master_sheet_id = properties.getProperty("MASTER_SHEET_ID");
 
 function PostSlackMessage(_text, _attachment, _debug){
   var jsonData =
@@ -39,7 +39,9 @@ function PostGameScheduleTrigger(){
 
 function PostGameSchedule(current_time, _debug) {
   Logger.log("Start Time: %s", current_time);
-  const games = GetComingUpGames(current_time);
+  const master_sheet = SpreadsheetApp.openById(master_sheet_id);
+  const sheet_id = getCurrentSeasonMasterSheetId(master_sheet);
+  const games = GetComingUpGames(current_time, sheet_id);
   Logger.log("Target Games: %s", games);
 
   if(games.length === 0){
@@ -54,7 +56,7 @@ function PostGameSchedule(current_time, _debug) {
     "*" + games.length + "本* の試合が予定されているぞ！", attachment, _debug);
 }
 
-function GetComingUpGames(current_time){
+function GetComingUpGames(current_time, sheet_id){
   const sheets = SpreadsheetApp.openById(sheet_id).getSheets();
   const challenge_sheets = sheets.filter(IsChallengeSheet);
   const target_rows = flatten(challenge_sheets.map(function(sheet){
