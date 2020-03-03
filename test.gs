@@ -3,12 +3,19 @@ function TestPostSlackMessage(){
 }
 
 function TestIdCompare(){
-  Logger.log(idCompare("[I-1-02]","[I-1-12]"));
-  Logger.log(idCompare("[II-1-02]","[I-1-12]"));
+  const a1 = {"id": "[1-02]", "tier": 1};
+  const b1 = {"id": "[1-12]", "tier": 1};
+  Logger.log(idCompare(a1, b1));
+  const a2 = {"id": "[1-02]", "tier": 2};
+  const b2 = {"id": "[1-12]", "tier": 1};
+  Logger.log(idCompare(a2, b2));
+  const a3 = {"id": "[3-02]", "tier": 2};
+  const b3 = {"id": "[2-12]", "tier": 3};
+  Logger.log(idCompare(a3, b3));
 }
 
 function TestPostGameSchedule(){
-  const current_time = new Date(2019, 8, 2, 15);
+  const current_time = new Date(2020, 2, 7, 15);
   PostGameSchedule(current_time, true);
 }
 

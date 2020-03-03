@@ -1,8 +1,4 @@
-var ATTACHMENT_COLORS = ["#61bb46","#fdb827", "#f5821f", "#e03a3e", "#963d97", "#009ddc"];
-
-function flatten(arrayOfArrays){
-  return [].concat.apply([], arrayOfArrays);
-}
+const ATTACHMENT_COLORS = ["#61bb46","#fdb827", "#f5821f", "#e03a3e", "#963d97", "#009ddc"];
 
 /**
  * 時間差を日単位で返す
@@ -21,12 +17,12 @@ function diffDay(x,y){
 }
 
 function idCompare(a, b){
-  const regexp = /\[(I+)-(\d+)-(\d+)\]/;
+  const regexp = /\[(\d+)-(\d+)\]/;
   
-  const b_tier_id = b.match(regexp)[1].length;
-  const b_game_id = b.match(regexp)[3];
-  const a_tier_id = a.match(regexp)[1].length;
-  const a_game_id = a.match(regexp)[3];
+  const b_tier_id = b["tier"];
+  const b_game_id = b["id"].match(regexp)[2];
+  const a_tier_id = a["tier"];
+  const a_game_id = a["id"].match(regexp)[2];
   
   if(a_tier_id === b_tier_id){
     return a_game_id - b_game_id;
@@ -35,9 +31,14 @@ function idCompare(a, b){
   }
 }
 
-function getTierFromGameId(id){
-  const regexp = /\[(I+)-\d+-\d+\]/;
-  return id.match(regexp)[1].length;
+function getTierFromSheetName(sheet){
+  const sheet_name = sheet.getName();
+  for(let [id, name] of tier_name.entries()){
+    if(sheet_name.includes(name)){
+      return id;
+    }
+  }
+  throw new Error("invalid sheet");
 }
 
 function getColor(i){
@@ -47,7 +48,7 @@ function getColor(i){
 
 function splitGamesByDate(games){
   return games.reduce(function(acc, game){
-    const key = game["game_date"].toLocaleString('Asia/Tokyo');
+    const key = game["game_date"].toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' });
     if(!acc[key]){
       acc[key] = [];
     }
@@ -70,7 +71,7 @@ function createAttachment(idx, date, games){
   
   const attach_fields = games.map(function(game){
     return {
-      "title": game.id.toString(),
+      "title": tier_name[game.tier] + ": " + game.id.toString(),
       "value": game.title,
       "short": false,
     };

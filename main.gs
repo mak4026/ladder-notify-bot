@@ -1,9 +1,10 @@
-var properties = PropertiesService.getScriptProperties();
-var webhook_url = properties.getProperty("WEBHOOK_URL");
-var username = properties.getProperty("USERNAME");
-var post_channel = properties.getProperty("POST_CHANNEL");
-var icon_image = properties.getProperty("ICON_IMAGE");
-var sheet_id = properties.getProperty("SHEET_ID");
+const properties = PropertiesService.getScriptProperties();
+const webhook_url = properties.getProperty("WEBHOOK_URL");
+const username = properties.getProperty("USERNAME");
+const post_channel = properties.getProperty("POST_CHANNEL");
+const icon_image = properties.getProperty("ICON_IMAGE");
+const active_sheet = SpreadsheetApp.getActiveSpreadsheet();
+const tier_name = ["大王戦", "王子・王女戦", "将軍戦"];
 
 function PostSlackMessage(_text, _attachment, _debug){
   var jsonData =
@@ -55,27 +56,30 @@ function PostGameSchedule(current_time, _debug) {
 }
 
 function GetComingUpGames(current_time){
-  const sheets = SpreadsheetApp.openById(sheet_id).getSheets();
+  const sheets = active_sheet.getSheets();
   const challenge_sheets = sheets.filter(IsChallengeSheet);
-  const target_rows = flatten(challenge_sheets.map(function(sheet){
-    return GetTargetRows(sheet, current_time);
-  }));
-  Logger.log("target rows: %s", target_rows);
-  
-  const target_games = target_rows.map(function(row){
-    return {
-      "id": row[0],
-      "tier": getTierFromGameId(row[0]),
-      "game_date": row[3],
-      "title": row[9]
-    };
-  }).sort(function(a, b){
+  const target_games = challenge_sheets.map(function(sheet){
+    const rows = GetTargetRows(sheet, current_time);
+    const tier_num = getTierFromSheetName(sheet);
+    const games = rows.map(function(row){
+      return {
+        "id": row[0],
+        "tier": tier_num,
+        "game_date": row[3],
+        "title": row[9]
+      };
+    });
+    return games;
+  }).flat()
+  .sort(function(a, b){
     const date = a["game_date"].getTime() - b["game_date"].getTime();
     if(date !== 0){
       return date;
     }
-    return idCompare(a["id"], b["id"]);
+    return idCompare(a, b);
   });
+  
+  Logger.log("target games: %s", target_games);
   return target_games;
 }
 
