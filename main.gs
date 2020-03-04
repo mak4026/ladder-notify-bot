@@ -3,7 +3,8 @@ const webhook_url = properties.getProperty("WEBHOOK_URL");
 const username = properties.getProperty("USERNAME");
 const post_channel = properties.getProperty("POST_CHANNEL");
 const icon_image = properties.getProperty("ICON_IMAGE");
-const active_sheet = SpreadsheetApp.getActiveSpreadsheet();
+const sheet_id = properties.getProperty("SHEET_ID");
+const active_sheet = SpreadsheetApp.openById(sheet_id);
 const tier_name = ["大王戦", "王子・王女戦", "将軍戦"];
 
 function PostSlackMessage(_text, _attachment, _debug){
