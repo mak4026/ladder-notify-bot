@@ -17,15 +17,29 @@ function diffDay(x,y){
 }
 
 function idCompare(a, b){
-  const regexp = /\[(\d+)-(\d+)\]/;
+  const regexp = /\[.+-(\d+)\]/;
   
   const b_tier_id = b["tier"];
-  const b_game_id = b["id"].match(regexp)[2];
+  const b_game_id = b["id"].match(regexp)[1];
   const a_tier_id = a["tier"];
-  const a_game_id = a["id"].match(regexp)[2];
+  const a_game_id = a["id"].match(regexp)[1];
+  
+  const round_exp = /\[(\d+)-.+\]/;
+  const b_round_res = b["id"].match(round_exp);
+  const a_round_res = a["id"].match(round_exp);
   
   if(a_tier_id === b_tier_id){
-    return a_game_id - b_game_id;
+    if((a_round_res || b_round_res) && !(a_round_res && b_round_res)){ // xor
+      if (a_round_res != null){
+        // b is Exihibition
+        return -1;
+      } else {
+        // a is Exihibition
+        return 1;
+      }
+    } else {
+      return a_game_id - b_game_id;
+    }
   } else {
     return a_tier_id - b_tier_id;
   }

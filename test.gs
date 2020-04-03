@@ -12,6 +12,12 @@ function TestIdCompare(){
   const a3 = {"id": "[3-02]", "tier": 2};
   const b3 = {"id": "[2-12]", "tier": 3};
   Logger.log(idCompare(a3, b3));
+  const a4 = {"id": "[ex-02]", "tier": 2};
+  const b4 = {"id": "[2-12]", "tier": 2};
+  Logger.log(idCompare(a4, b4));
+  const a5 = {"id": "[ex-02]", "tier": 1};
+  const b5 = {"id": "[2-12]", "tier": 2};
+  Logger.log(idCompare(a5, b5));
 }
 
 function TestPostGameSchedule(){
