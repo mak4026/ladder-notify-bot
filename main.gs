@@ -56,11 +56,11 @@ function PostGameSchedule(current_time, _debug) {
     "*" + games.length + "本* の試合が予定されているぞ！", attachment, _debug);
 }
 
-function GetComingUpGames(current_time, sheet_id){
+function GetComingUpGames(current_time, sheet_id, end_day = 1){
   const sheets = SpreadsheetApp.openById(sheet_id).getSheets();
   const challenge_sheets = sheets.filter(IsChallengeSheet);
   const target_rows = flatten(challenge_sheets.map(function(sheet){
-    return GetTargetRows(sheet, current_time);
+    return GetTargetRows(sheet, current_time, end_day);
   }));
   Logger.log("target rows: %s", target_rows);
   
@@ -86,13 +86,13 @@ function IsChallengeSheet(sheet){
   return regexp.test(sheet_name);
 }
 
-function GetTargetRows(sheet, current_time){
+function GetTargetRows(sheet, current_time, end_day = 1){
   const arr = sheet.getDataRange().getValues();
   const date_idx = 1; // B列
   return arr.filter(function(row){
     const row_date = row[date_idx];
     const row_time = new Date(row_date);
     const diff_day = diffDay(current_time, row_time);
-    return 0 <= diff_day && diff_day < 1;
+    return 0 <= diff_day && diff_day < end_day;
   });
 }
