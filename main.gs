@@ -1,9 +1,9 @@
-var properties = PropertiesService.getScriptProperties();
-var webhook_url = properties.getProperty("WEBHOOK_URL");
-var username = properties.getProperty("USERNAME");
-var post_channel = properties.getProperty("POST_CHANNEL");
-var icon_image = properties.getProperty("ICON_IMAGE");
-var master_sheet_id = properties.getProperty("MASTER_SHEET_ID");
+const properties = PropertiesService.getScriptProperties();
+const webhook_url = properties.getProperty("WEBHOOK_URL");
+const username = properties.getProperty("USERNAME");
+const post_channel = properties.getProperty("POST_CHANNEL");
+const icon_image = properties.getProperty("ICON_IMAGE");
+const master_sheet_id = properties.getProperty("MASTER_SHEET_ID");
 
 function PostSlackMessage(_text, _attachment, _debug){
   var jsonData =

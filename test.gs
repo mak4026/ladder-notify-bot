@@ -7,7 +7,7 @@ function TestIdCompare(){
 }
 
 function TestPostGameSchedule(){
-  const current_time = new Date(2019, 5, 13, 15);
+  const current_time = new Date(2020, 1, 15, 15);
   PostGameSchedule(current_time, true);
 }
 

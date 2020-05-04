@@ -1,4 +1,4 @@
-var ATTACHMENT_COLORS = ["#61bb46","#fdb827", "#f5821f", "#e03a3e", "#963d97", "#009ddc"];
+const ATTACHMENT_COLORS = ["#61bb46","#fdb827", "#f5821f", "#e03a3e", "#963d97", "#009ddc"];
 
 function flatten(arrayOfArrays){
   return [].concat.apply([], arrayOfArrays);
@@ -34,7 +34,7 @@ function getColor(i){
 
 function splitGamesByDate(games){
   return games.reduce(function(acc, game){
-    const key = game["game_date"].toLocaleString('Asia/Tokyo');
+    const key = game["game_date"].toLocaleString('ja-JP', { timeZone: 'Asia/Tokyo' });
     if(!acc[key]){
       acc[key] = [];
     }
