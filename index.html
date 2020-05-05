@@ -13,7 +13,36 @@
     <script src="https://cdn.jsdelivr.net/npm/uikit@3.4.2/dist/js/uikit-icons.min.js"></script>
     
     <script>
-    console.log(<?= games[0].id ?>);
+      function createCard(id, title, date){
+        let wrap_elem = document.createElement("div");
+        
+        let container_elem = document.createElement("div");
+        const container_class_list = ["uk-card", "uk-card-default", "uk-card-body", "uk-card-hover"];
+        container_class_list.forEach(c => container_elem.classList.add(c));
+        
+        let title_elem = document.createElement("h3");
+        title_elem.classList.add("uk-card-title");
+        title_elem.innerText = id;
+        
+        let body_elem = document.createElement("p");
+        body_elem.innerText = title;
+        
+        container_elem.appendChild(title_elem);
+        container_elem.appendChild(body_elem);
+        
+        wrap_elem.appendChild(container_elem);
+        return wrap_elem;
+      }
+      
+      function createUpcomingGamesCard(){
+        let elem = document.getElementById("upcoming");
+        <? for (let i = 0; i < Math.min(10, games.length); i++) { ?>
+          var card_elem = createCard( <?= games[i].id ?>, <?= games[i].title ?>, <?= games[i].game_date ?>);
+          elem.appendChild(card_elem);
+        <? } ?>
+      }
+      
+      document.addEventListener("DOMContentLoaded", createUpcomingGamesCard);
     </script>
   </head>
   <body>
@@ -25,15 +54,7 @@
   <section class="uk-section uk-section-default">
     <div class="uk-container">
       <h2>もうすぐ始まる対戦</h2>
-      <div class="uk-card uk-card-default uk-card-body uk-card-hover">
-        <h3 class="uk-card-title">Default</h3>
-        <p>Lorem ipsum <a href="#">dolor</a> sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-      </div>
-      
-      <div class="uk-card uk-card-default uk-card-body uk-card-hover">
-        <h3 class="uk-card-title">Default</h3>
-        <p>Lorem ipsum <a href="#">dolor</a> sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-      </div>
+      <div class="uk-flex uk-flex-wrap uk-flex-wrap-around uk-grid-match uk-child-width-1-2@l" id="upcoming" uk-grid></div>
     </div>
   </section>
   </body>

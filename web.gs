@@ -1,7 +1,8 @@
-function doGet(e) {
-  var htmlTemplate = HtmlService.createTemplateFromFile("index");
-  htmlTemplate.games = GetUpcomingGamesAll(new Date(2020, 1, 15, 15));
-  return htmlTemplate.evaluate();
+function doGet() {
+  let t = HtmlService.createTemplateFromFile("index");
+  const current_time = new Date(2020, 1, 15, 15);
+  t.games = GetUpcomingGamesAll(current_time);
+  return t.evaluate();
 }
 
 function GetUpcomingGamesAll(current_time){
