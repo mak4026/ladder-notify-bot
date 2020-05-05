@@ -53,15 +53,22 @@
         return wrap_elem;
       }
       
-      function createUpcomingGamesCard(){
+      function createUpcomingGamesCard(games){
+      console.log("hoge");
+      console.log(games);
         let elem = document.getElementById("upcoming");
-        <? for (let i = 0; i < Math.min(10, games.length); i++) { ?>
-          var card_elem = createCard( <?= games[i].id ?>, <?= games[i].title ?>, <?= games[i].game_date ?>);
+        for (let i = 0; i < Math.min(10, games.length); i++) {
+          let card_elem = createCard( games[i].id, games[i].title, games[i].game_date);
           elem.appendChild(card_elem);
-        <? } ?>
+        }
       }
       
-      document.addEventListener("DOMContentLoaded", createUpcomingGamesCard);
+      document.addEventListener("DOMContentLoaded", () => {
+        google.script.run
+          .withSuccessHandler(data => {
+            createUpcomingGamesCard(JSON.parse(data));
+          }).GetUpcomingGamesAll();
+      });
       document.addEventListener("DOMContentLoaded", () => { const clipboard = new ClipboardJS(".copy-button")});
     </script>
   </head>
