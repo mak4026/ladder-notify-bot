@@ -12,7 +12,23 @@
     <script src="https://cdn.jsdelivr.net/npm/uikit@3.4.2/dist/js/uikit.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/uikit@3.4.2/dist/js/uikit-icons.min.js"></script>
     
+    <script src="https://unpkg.com/clipboard@2/dist/clipboard.min.js"></script>
+    
     <script>
+      function createCopyButtonElem(txt){
+        let wrap_elem = document.createElement("div");
+        wrap_elem.classList.add("uk-card-badge");
+        
+        let copy_elem = document.createElement("button");
+        copy_elem.classList.add("copy-button");
+        copy_elem.setAttribute("uk-icon", "copy");
+        copy_elem.setAttribute("data-clipboard-text", txt);
+        
+        wrap_elem.appendChild(copy_elem);
+  
+        return wrap_elem;
+      }
+    
       function createCard(id, title, date){
         let wrap_elem = document.createElement("div");
         
@@ -24,10 +40,13 @@
         title_elem.classList.add("uk-card-title");
         title_elem.innerText = id;
         
+        let copy_elem = createCopyButtonElem(title);
+        
         let body_elem = document.createElement("p");
         body_elem.innerText = title;
         
         container_elem.appendChild(title_elem);
+        container_elem.appendChild(copy_elem);
         container_elem.appendChild(body_elem);
         
         wrap_elem.appendChild(container_elem);
@@ -43,6 +62,7 @@
       }
       
       document.addEventListener("DOMContentLoaded", createUpcomingGamesCard);
+      document.addEventListener("DOMContentLoaded", () => { const clipboard = new ClipboardJS(".copy-button")});
     </script>
   </head>
   <body>
