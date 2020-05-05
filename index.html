@@ -24,7 +24,22 @@
         copy_elem.setAttribute("uk-icon", "copy");
         copy_elem.setAttribute("data-clipboard-text", txt);
         
+        let drop_elem = document.createElement("div");
+        drop_elem.setAttribute("uk-drop", "mode: click; pos: top-center");
+        
+        let dropcard_elem = document.createElement("div");
+        ["uk-card", "uk-card-body", "uk-card-default", "uk-card-small"].forEach(c => dropcard_elem.classList.add(c));
+        
+        let droptext_elem = document.createElement("p");
+        droptext_elem.classList.add("uk-text-center");
+        droptext_elem.innerText = "Copied!";
+        
+        dropcard_elem.appendChild(droptext_elem);
+        
+        drop_elem.appendChild(dropcard_elem);
+        
         wrap_elem.appendChild(copy_elem);
+        wrap_elem.appendChild(drop_elem);
   
         return wrap_elem;
       }
@@ -57,6 +72,7 @@
       console.log("hoge");
       console.log(games);
         let elem = document.getElementById("upcoming");
+        elem.classList.add("uk-animation-slide-bottom-small");
         for (let i = 0; i < Math.min(10, games.length); i++) {
           let card_elem = createCard( games[i].id, games[i].title, games[i].game_date);
           elem.appendChild(card_elem);
@@ -67,6 +83,9 @@
         google.script.run
           .withSuccessHandler(data => {
             createUpcomingGamesCard(JSON.parse(data));
+            let preloader = document.getElementById("preloader");
+            preloader.classList.add("uk-animation-fade");
+            preloader.classList.add("uk-animation-reverse");
           }).GetUpcomingGamesAll();
       });
       document.addEventListener("DOMContentLoaded", () => { const clipboard = new ClipboardJS(".copy-button")});
@@ -81,6 +100,9 @@
   <section class="uk-section uk-section-default">
     <div class="uk-container">
       <h2>もうすぐ始まる対戦</h2>
+      <div id="preloader" class="uk-position-center">
+        <div uk-spinner="ratio: 3"></div>
+      </div>
       <div class="uk-flex uk-flex-wrap uk-flex-wrap-around uk-grid-match uk-child-width-1-2@l" id="upcoming" uk-grid></div>
     </div>
   </section>
