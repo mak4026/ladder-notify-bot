@@ -65,7 +65,6 @@ function GetComingUpGames(current_time){
   const target_games = target_rows.map(function(row){
     return {
       "id": row[0],
-      "tier": getTierFromGameId(row[0]),
       "game_date": row[3],
       "title": row[9]
     };

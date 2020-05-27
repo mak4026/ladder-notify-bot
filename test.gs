@@ -3,12 +3,11 @@ function TestPostSlackMessage(){
 }
 
 function TestIdCompare(){
-  Logger.log(idCompare("[I-1-02]","[I-1-12]"));
-  Logger.log(idCompare("[II-1-02]","[I-1-12]"));
+  Logger.log(idCompare("[1-02]","[1-12]"));
 }
 
 function TestPostGameSchedule(){
-  const current_time = new Date(2019, 8, 2, 15);
+  const current_time = new Date(2020, 4, 30, 15);
   PostGameSchedule(current_time, true);
 }
 
@@ -28,10 +27,8 @@ function TestCreateAttachments(){
 
 function TestIsChallengeSheet(){
   const regexp = /^対戦表.*/;
-  const sheet_name1 = "対戦表 - tier1";
-  const sheet_name2 = "対戦表 - tier2";
-  const wrong_sheet = "順位表 - tier1";
+  const sheet_name1 = "対戦表";
+  const wrong_sheet = "順位表";
   Logger.log(regexp.test(sheet_name1));
-  Logger.log(regexp.test(sheet_name2));
   Logger.log(regexp.test(wrong_sheet));
 }
